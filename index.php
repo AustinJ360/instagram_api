@@ -4,10 +4,23 @@
 	ini_set('default_socket_timeout', 300);
 	session_start();
 	//Make Constants using define.
-	define('clientID', ' c73d173254d844b89d8117954f97d9ee');
+	define('clientID',     'c73d173254d844b89d8117954f97d9ee');
 	define('clientSecret', '971766cd8c4f4af7b7a6ff36f32b68b0');
 	define('redirectURI', 'http://localhost/appacademyapi/index.php');
 	define('ImageDirectory', 'pics/');
+	//Function that is going to connect to Instagram.
+	function connectToInstagram($url){
+		$ch = curl_init();
+		curl_setopt_array($ch, array(
+			CURLOPT_URL => $url,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_SSL_VERIFYPEER => false,
+			CURLOPT_SSL_VERIFYHOST => 2,
+			)};
+		$result = curl_exec($ch);
+		curl_close($ch);
+		return $result;
+	}
 	
 	if (isset($_GET['code'])){
 		$code = ($_GET['code']);
