@@ -4,7 +4,7 @@
 	ini_set('default_socket_timeout', 300);
 	session_start();
 	//Make Constants using define.
-	define('clientID', 'c73d173254d844b89d8117954f97d9ee');
+	define('clientID',     'c73d173254d844b89d8117954f97d9ee');
 	define('clientSecret', '971766cd8c4f4af7b7a6ff36f32b68b0');
 	define('redirectURI', 'http://localhost/appacademyapi/index.php');
 	define('ImageDirectory', 'pics/');
@@ -16,18 +16,28 @@
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_SSL_VERIFYPEER => false,
 			CURLOPT_SSL_VERIFYHOST => 2,
-			)};
+			));
 		$result = curl_exec($ch);
 		curl_close($ch);
 		return $result;
 	}
-	
 	//function to get userID cause username doesn't allow us to get picture!
 	function getUserID($userName){
 		$url = 'http://api.instagram.com/v1/users/search?q='.$userName.'&client_id='.clientID;
-		$instagramInfo = connectToInstagr($url);
+		$instagramInfo = connectToInstagram($url);
 		$results = json_decode($instagramInfo, true);
-		echo $results['data']['0']['id'];
+		echo $results['data']['0']['id'];//echoing out userID.
+	}
+	//function to print out images onto screen
+	function printImages($userID){
+		$url = 'https://api.instagram.com/vl/users/'.$userID.'/media/recent?client_id='.clientID.'&count=5';
+		$instagramInfo = connectToInstagram($url);
+		$results = json_decode($instagramInfo, true);
+		//Parse through the info. one by one.
+		foreach ($results['data'] as $items){
+			$image_url = $items['images']['low_resolution']['url'];//going to go through all of my results and give myself back the URL of those pictures because we want to save it in the PHP server.
+		echo '<img src=" '.$image_url.'"/><br/>';		
+		}
 	}
 	if (isset($_GET['code'])){
 		$code = ($_GET['code']);
@@ -47,7 +57,9 @@
 $result = curl_exec($curl);
 curl_close($curl);
 $results = json_decode($result, true);
-getUserID($results['user']['username']);
+$userName = $results['user']['username'];
+$userID = getUserID($userName);
+printImages($userID);
 }
 else{
 ?>
@@ -71,8 +83,7 @@ else{
 </html>
 <?php
 }
-?>
-<!--
+?><!--
 CLIENT INFO
 CLIENT ID	    c73d173254d844b89d8117954f97d9ee
 CLIENT SECRET	971766cd8c4f4af7b7a6ff36f32b68b0
