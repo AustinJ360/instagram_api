@@ -4,7 +4,7 @@
 	ini_set('default_socket_timeout', 300);
 	session_start();
 	//Make Constants using define.
-	define('clientID', 'c73d173254d844b89d8117954f97d9ee');
+	define('clientID', ' c73d173254d844b89d8117954f97d9ee');
 	define('clientSecret', '971766cd8c4f4af7b7a6ff36f32b68b0');
 	define('redirectURI', 'http://localhost/appacademyapi/index.php');
 	define('ImageDirectory', 'pics/');
@@ -24,9 +24,12 @@
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $access_token_settings);//settings the POSTFIELDS to array setup that we created.
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);//setting it equal to 1 because we are getting strings back.
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);//but in live work-production we want to set this to true.
-}
 $result = curl_exec($curl);
-curl_close();	
+curl_close($curl);
+$results = json_decode($result, true);
+echo $results['user']['username'];
+}
+else{
 ?>
 <!DOCTYPE html>
 <html>
@@ -46,6 +49,9 @@ curl_close();
 	<script type="js/main.js"></script>
 </body>
 </html>
+<?php
+}
+?>
 <!--
 CLIENT INFO
 CLIENT ID	    c73d173254d844b89d8117954f97d9ee
