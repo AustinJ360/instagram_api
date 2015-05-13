@@ -4,7 +4,7 @@
 	ini_set('default_socket_timeout', 300);
 	session_start();
 	//Make Constants using define.
-	define('clientID',     'c73d173254d844b89d8117954f97d9ee');
+	define('clientID', 'c73d173254d844b89d8117954f97d9ee');
 	define('clientSecret', '971766cd8c4f4af7b7a6ff36f32b68b0');
 	define('redirectURI', 'http://localhost/appacademyapi/index.php');
 	define('ImageDirectory', 'pics/');
@@ -22,6 +22,13 @@
 		return $result;
 	}
 	
+	//function to get userID cause username doesn't allow us to get picture!
+	function getUserID($userName){
+		$url = 'http://api.instagram.com/v1/users/search?q='.$userName.'&client_id='.clientID;
+		$instagramInfo = connectToInstagr($url);
+		$results = json_decode($instagramInfo, true);
+		echo $results['data']['0']['id'];
+	}
 	if (isset($_GET['code'])){
 		$code = ($_GET['code']);
 		$url = 'https://api.instagram.com/oauth/access_token';
@@ -40,7 +47,7 @@
 $result = curl_exec($curl);
 curl_close($curl);
 $results = json_decode($result, true);
-echo $results['user']['username'];
+getUserID($results['user']['username']);
 }
 else{
 ?>
