@@ -9,18 +9,24 @@
 	define('redirectURI', 'http://localhost/appacademyapi/index.php');
 	define('ImageDirectory', 'pics/');
 	
-	if isset(($_GET['code'])) {
+	if (isset($_GET['code'])){
 		$code = ($_GET['code']);
 		$url = 'https://api.instagram.com/oauth/access_token';
 		$access_token_settings = array('client_id' => clientID, 
-										'client_secret' => clientSecret,
-										'grant_type' => 'authorize_code',
-										'redirect_uri' => redirectURI,
-										'code' => $code
+									   'client_secret' => clientSecret,
+									   'grant_type' => 'authorization_code',
+									   'redirect_uri' => redirectURI,
+									   'code' => $code
 										);
-	}
-	
-	
+		//cURL is what we use in PHP, it's a library calls to other API's
+		$curl = curl_init($url);//setting a cURL session and we put in $url because that's where we are getting the data from.
+		curl_setopt($curl, CURLOPT_POST, true);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, $access_token_settings);//settings the POSTFIELDS to array setup that we created.
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);//setting it equal to 1 because we are getting strings back.
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);//but in live work-production we want to set this to true.
+}
+$result = curl_exec($curl);
+curl_close();	
 ?>
 <!DOCTYPE html>
 <html>
