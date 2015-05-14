@@ -4,8 +4,8 @@
 	ini_set('default_socket_timeout', 300);
 	session_start();
 	//Make Constants using define.
-	define('clientID',     'c73d173254d844b89d8117954f97d9ee');
-	define('clientSecret', '971766cd8c4f4af7b7a6ff36f32b68b0');
+	define('clientID',     'd6577212add54a37995ab7badf09d4d9');
+	define('clientSecret', '525f73951ee74a2f831178cb8c04320b');
 	define('redirectURI', 'http://localhost/appacademyapi/index.php');
 	define('ImageDirectory', 'pics/');
 	//Function that is going to connect to Instagram.
@@ -26,8 +26,7 @@
 		$url = 'http://api.instagram.com/v1/users/search?q='.$userName.'&client_id='.clientID;
 		$instagramInfo = connectToInstagram($url);
 		$results = json_decode($instagramInfo, true);
-		echo $results['data']['0']['id'];//echoing out userID.
-	}
+		return $results['data']['0']['id'];//echoing out userID.	}
 	//function to print out images onto screen
 	function printImages($userID){
 		$url = 'https://api.instagram.com/vl/users/'.$userID.'/media/recent?client_id='.clientID.'&count=5';
@@ -85,8 +84,8 @@ else{
 }
 ?><!--
 CLIENT INFO
-CLIENT ID	    c73d173254d844b89d8117954f97d9ee
-CLIENT SECRET	971766cd8c4f4af7b7a6ff36f32b68b0
+CLIENT ID	    d6577212add54a37995ab7badf09d4d9
+CLIENT SECRET	525f73951ee74a2f831178cb8c04320b
 WEBSITE URL	    http://localhost/appacademyapi/index.php
 REDIRECT URI	http://localhost/appacademyapi/index.php 
 -->
